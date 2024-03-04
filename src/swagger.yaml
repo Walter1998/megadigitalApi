@@ -1,0 +1,371 @@
+openapi: 3.0.3
+info:
+  title: MegaTest Documentation
+  description: This is an API test
+  version: 1.0.0
+  contact:
+    email: walter.fabian98@gmail.com
+
+paths:
+  /api/personas:
+    get:
+      summary: Obtener todas las personas.
+      responses:
+        "200":
+          description: Lista de todas las personas.
+          content:
+            application/json:
+              schema:
+                $ref: ./src/modules/persona/infra/typeorm/entities/Persona.entity.ts
+    post:
+      summary: Crear Persona.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombreCompleto:
+                  type: string
+                nroDocumento:
+                  type: string
+                correo:
+                  type: string
+                telefono:
+                  type: string
+      responses:
+        "200":
+          description: Persona creada exitosamente.
+          content:
+            text/plain: {}
+        "400":
+          description: Errores de validación de entrada.
+          x-error-description:
+            validation: Error de validación.
+        "500":
+          description: Error del servidor.
+          content:
+            text/plain: {}
+
+  /api/personas/{id}:
+    get:
+      summary: Obtener una persona por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Persona encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: ./src/modules/persona/infra/typeorm/entities/Persona.entity.ts
+        "404":
+          description: Persona no encontrada.
+          content:
+            text/plain: {}
+    put:
+      summary: Actualizar una persona por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombreCompleto:
+                  type: string
+                nroDocumento:
+                  type: string
+                correo:
+                  type: string
+                telefono:
+                  type: string
+      responses:
+        "200":
+          description: Persona actualizada.
+          content:
+            text/plain: {}
+        "400":
+          description: Errores de validación de entrada.
+          x-error-description:
+            validation: Error de validación.
+        "500":
+          description: Error del servidor.
+          content:
+            text/plain: {}
+    delete:
+      summary: Eliminar una persona por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Persona eliminada exitosamente.
+          content:
+            text/plain: {}
+        "404":
+          description: Persona no encontrada.
+          content:
+            text/plain: {}
+
+  /api/habitaciones:
+    get:
+      summary: Obtener todas las habitaciones.
+      responses:
+        "200":
+          description: Lista de todas las habitaciones.
+          content:
+            application/json:
+              schema:
+                $ref: ./src/modules/habitacion/infra/typeorm/entities/Habitacion.entity.ts
+    post:
+      summary: Crear Habitación.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                habitacionpiso:
+                  type: integer
+                habitacionnro:
+                  type: integer
+                cantcamas:
+                  type: integer
+                tienetelevision:
+                  type: boolean
+                tienefrigobar:
+                  type: boolean
+      responses:
+        "200":
+          description: Habitación creada exitosamente.
+          content:
+            text/plain: {}
+        "400":
+          description: Errores de validación de entrada.
+          x-error-description:
+            validation: Error de validación.
+        "500":
+          description: Error del servidor.
+          content:
+            text/plain: {}
+
+  /api/habitaciones/{id}:
+    get:
+      summary: Obtener una habitación por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Habitación encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: ./src/modules/habitacion/infra/typeorm/entities/Habitacion.entity.ts
+        "404":
+          description: Habitación no encontrada.
+          content:
+            text/plain: {}
+    put:
+      summary: Actualizar una habitación por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                habitacionpiso:
+                  type: integer
+                habitacionnro:
+                  type: integer
+                cantcamas:
+                  type: integer
+                tienetelevision:
+                  type: boolean
+                tienefrigobar:
+                  type: boolean
+      responses:
+        "200":
+          description: Habitación actualizada.
+          content:
+            text/plain: {}
+        "400":
+          description: Errores de validación de entrada.
+          x-error-description:
+            validation: Error de validación.
+        "500":
+          description: Error del servidor.
+          content:
+            text/plain: {}
+    delete:
+      summary: Eliminar una habitación por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Habitación eliminada exitosamente.
+          content:
+            text/plain: {}
+        "404":
+          description: Habitación no encontrada.
+          content:
+            text/plain: {}
+  /api/reservas:
+    get:
+      summary: Obtener todas las reservas.
+      responses:
+        "200":
+          description: Lista de todas las reservas.
+          content:
+            application/json:
+              schema:
+                $ref: ./src/modules/reserva/infra/typeorm/entities/Reserva.entity.ts
+
+    post:
+      summary: Crear Reserva.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fechareserva:
+                  type: string
+                  format: date-time
+                fechaentrada:
+                  type: string
+                  format: date-time
+                fechasalida:
+                  type: string
+                  format: date-time
+                habitacion_id:
+                  type: integer
+                persona_id:
+                  type: integer
+                montoreserva:
+                  type: number
+      responses:
+        "200":
+          description: Reserva creada exitosamente.
+          content:
+            text/plain: {}
+        "400":
+          description: Errores de validación de entrada.
+          x-error-description:
+            validation: Error de validación.
+        "500":
+          description: Error del servidor.
+          content:
+            text/plain: {}
+            /api/reservas/{id}:
+  /api/reservas/{id}:
+    get:
+      summary: Obtener una reserva por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Reserva encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: ./src/modules/reserva/infra/typeorm/entities/Reserva.entity.ts
+        "404":
+          description: Reserva no encontrada.
+          content:
+            text/plain: {}
+    put:
+      summary: Actualizar una reserva por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fechareserva:
+                  type: string
+                  format: date-time
+                fechaentrada:
+                  type: string
+                  format: date-time
+                fechasalida:
+                  type: string
+                  format: date-time
+                habitacion_id:
+                  type: integer
+                persona_id:
+                  type: integer
+                montoreserva:
+                  type: number
+      responses:
+        "200":
+          description: Reserva actualizada.
+          content:
+            text/plain: {}
+        "400":
+          description: Errores de validación de entrada.
+          x-error-description:
+            validation: Error de validación.
+        "500":
+          description: Error del servidor.
+          content:
+            text/plain: {}
+    delete:
+      summary: Eliminar una reserva por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Reserva eliminada exitosamente.
+          content:
+            text/plain: {}
+        "404":
+          description: Reserva no encontrada.
+          content:
+            text/plain: {}
