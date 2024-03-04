@@ -23,6 +23,7 @@ class App extends ConfigServer {
     public env: string;
     public port: string;
     public server: any;
+    public host: string;
 
     /**
      * Constructor de la clase `App`.
@@ -33,6 +34,7 @@ class App extends ConfigServer {
         this.app = express();
         this.env = 'development';
         this.port = process.env.PORT ?? "3000";
+        this.host = "0.0.0.0"
 
         this.connectToDatabase();
         this.initializeMiddlewares();
@@ -112,8 +114,8 @@ class App extends ConfigServer {
     /**
      * Método público para iniciar la escucha del servidor.
      */
-    public listen() {
-        this.app.listen(this.port, () => {
+    public listen(port: number, host: string = '0.0.0.0') {
+        this.app.listen(port, host, () => {
             displayRoutes(this.app);
             console.log("Server Corriendo!");
         });

@@ -18,4 +18,7 @@ const app = new App([
 ]);
 
 // Iniciar la escucha del servidor
-app.listen();
+const portNumber = 3000;
+const hostAddress = '0.0.0.0';
+
+app.listen(portNumber, hostAddress);
