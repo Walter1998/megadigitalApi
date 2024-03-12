@@ -6,13 +6,11 @@ import { IsNotEmpty, IsNumber, IsPositive, IsDate, IsISO8601 } from 'class-valid
 export class ReservaDTO {
     id?: number;
 
-    @IsNotEmpty({ message: 'La fecha de reserva es obligatoria' })
-    fechareserva!: Date;
+    fechareserva?: Date;
 
     @IsNotEmpty({ message: 'La fecha de entrada es obligatoria' })
     fechaentrada!: Date;
 
-    @IsNotEmpty({ message: 'La fecha de salida es obligatoria' })
     fechasalida!: Date;
 
     @IsNotEmpty({ message: 'La habitación ID es obligatoria' })

@@ -3,6 +3,8 @@ import { ReservaEntity } from '../infra/typeorm/entities/reserva.entity';
 import { ReservaDTO } from '../infra/typeorm/dtos/ReservaDTO';
 import { ReservaService } from './reserva.service';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { AppError } from '../../../shared/errors/AppError';
+import { esFechaMayorQueHoy, esFechaSalidaMayor } from '../../../shared/infra/http/middlewares/fecha-validate';
 
 // Definir la clase ReservaController
 export class ReservaController extends BaseService<ReservaEntity> {
@@ -67,19 +69,28 @@ export class ReservaController extends BaseService<ReservaEntity> {
             nuevaReserva.fechasalida = new Date(fechasalida);
             nuevaReserva.fechaentrada = new Date(fechaentrada);
 
-            // Calcular la cantidad de días de la reserva
-            const diasReserva = Math.ceil((nuevaReserva.fechasalida.getTime() - nuevaReserva.fechaentrada.getTime()) / (1000 * 60 * 60 * 24));
+            if (esFechaMayorQueHoy(nuevaReserva.fechaentrada)) {
+                if (esFechaSalidaMayor(nuevaReserva.fechaentrada, nuevaReserva.fechasalida)) {
 
-            // Calcular el monto de la reserva (Gs. 120.000 por día)
-            nuevaReserva.montoreserva = diasReserva * 120000;
+                    // Calcular la cantidad de días de la reserva
+                    const diasReserva = Math.ceil((nuevaReserva.fechasalida.getTime() - nuevaReserva.fechaentrada.getTime()) / (1000 * 60 * 60 * 24));
 
-            console.log('Nueva Reserva:', nuevaReserva);
+                    // Calcular el monto de la reserva (Gs. 120.000 por día)
+                    nuevaReserva.montoreserva = diasReserva * 120000;
 
-            const reservaCreada = await this.reservaService.createReserva(nuevaReserva);
+                    const reservaCreada = await this.reservaService.createReserva(nuevaReserva);
 
-            console.log('Reserva Creada:', reservaCreada);
+                    console.log('Reserva Creada:', reservaCreada);
 
-            res.status(201).json(reservaCreada);
+                    res.status(201).json(reservaCreada);
+                }else{
+                    throw new AppError("La fecha de salida debe ser mayor que la fecha de entrada!");
+                }
+
+
+            } else {
+                throw new AppError("La fecha de entrada es menor que la fecha de hoy!");
+            }
         } catch (error) {
             console.log('Error en createReserva:', error);
             res.status(500).json({ error: 'Error interno del servidor' });

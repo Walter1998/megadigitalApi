@@ -11,13 +11,13 @@ export class ReservaEntity {
     id?: number;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    fechareserva!: Date;
+    fechareserva?: Date;
 
     @Column({ type: 'timestamp' })
     fechaentrada!: Date;
 
     @Column({ type: 'timestamp' })
-    fechasalida!: Date;
+    fechasalida?: Date;
 
     @Column({ type: 'int' })
     montoreserva!: number;
