@@ -1,0 +1,85 @@
+// Prueba para verificar que se obtienen todas las personas
+pm.test("Obtener todas las personas", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/personas",
+        method: "GET"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("array").that.is.not.empty;
+    });
+});
+
+// Prueba para verificar que se obtiene una persona por su ID
+pm.test("Obtener una persona por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/personas/1", // Reemplaza '1' con un ID válido de persona
+        method: "GET"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se crea una nueva persona
+pm.test("Crear una nueva persona", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/personas",
+        method: "POST",
+        header: {
+            "Content-Type": "application/json"
+        },
+        body: {
+            mode: "raw",
+            raw: JSON.stringify({
+                nombreCompleto: "Nombre Apellido", // Nombre completo de la persona
+                nroDocumento: "123456789", // Número de documento
+                correo: "correo@example.com", // Correo electrónico
+                telefono: "123456789" // Número de teléfono
+            })
+        }
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se actualiza una persona por su ID
+pm.test("Actualizar una persona por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/personas/1", // Reemplaza '1' con un ID válido de persona
+        method: "PUT",
+        header: {
+            "Content-Type": "application/json"
+        },
+        body: {
+            mode: "raw",
+            raw: JSON.stringify({
+                nombreCompleto: "Nuevo Nombre", // Nuevo nombre completo de la persona
+            })
+        }
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se elimina una persona por su ID
+pm.test("Eliminar una persona por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/personas/1",
+        method: "DELETE"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
