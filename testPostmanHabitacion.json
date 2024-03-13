@@ -1,0 +1,86 @@
+// Prueba para verificar que se obtienen todas las habitaciones
+pm.test("Obtener todas las habitaciones", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/habitaciones",
+        method: "GET"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("array").that.is.not.empty;
+    });
+});
+
+// Prueba para verificar que se obtiene una habitación por su ID
+pm.test("Obtener una habitación por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/habitaciones/1", // Reemplaza '1' con un ID válido de habitación
+        method: "GET"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se crea una nueva habitación
+pm.test("Crear una nueva habitación", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/habitaciones",
+        method: "POST",
+        header: {
+            "Content-Type": "application/json"
+        },
+        body: {
+            mode: "raw",
+            raw: JSON.stringify({
+                habitacionpiso: 1, // Número de piso de la habitación
+                habitacionnro: 101, // Número de la habitación
+                cantcamas: 2, // Cantidad de camas
+                tienetelevision: true, // Indica si la habitación tiene televisión
+                tienefrigobar: false // Indica si la habitación tiene frigobar
+            })
+        }
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se actualiza una habitación por su ID
+pm.test("Actualizar una habitación por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/habitaciones/1", // Reemplaza '1' con un ID válido de habitación
+        method: "PUT",
+        header: {
+            "Content-Type": "application/json"
+        },
+        body: {
+            mode: "raw",
+            raw: JSON.stringify({
+                habitacionpiso: 2, // Nuevo número de piso de la habitación
+            })
+        }
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se elimina una habitación por su ID
+pm.test("Eliminar una habitación por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/habitaciones/1", // Reemplaza '1' con un ID válido de habitación
+        method: "DELETE"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
