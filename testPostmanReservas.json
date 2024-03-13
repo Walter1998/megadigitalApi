@@ -1,0 +1,87 @@
+// Prueba para verificar que se obtienen todas las reservas
+pm.test("Obtener todas las reservas", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/reservas",
+        method: "GET"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("array").that.is.not.empty;
+    });
+});
+
+// Prueba para verificar que se obtiene una reserva por su ID
+pm.test("Obtener una reserva por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/reservas/1", 
+        method: "GET"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se crea una nueva reserva
+pm.test("Crear una nueva reserva", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/reservas",
+        method: "POST",
+        header: {
+            "Content-Type": "application/json"
+        },
+        body: {
+            mode: "raw",
+            raw: JSON.stringify({
+                fechaentrada: "2024-03-13", // Fecha de entrada
+                fechasalida: "2024-03-15", // Fecha de salida
+                habitacion_id: 1, // ID de habitación
+                persona_id: 1 // ID de persona
+            })
+        }
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se actualiza una reserva por su ID
+pm.test("Actualizar una reserva por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/reservas/1", 
+        method: "PUT",
+        header: {
+            "Content-Type": "application/json"
+        },
+        body: {
+            mode: "raw",
+            raw: JSON.stringify({
+                // Puedes enviar los campos que deseas actualizar aquí
+                fechaentrada: "2024-03-15" // Nueva fecha de entrada
+            })
+        }
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
+// Prueba para verificar que se elimina una reserva por su ID
+pm.test("Eliminar una reserva por su ID", function () {
+    pm.sendRequest({
+        url: pm.variables.get("base_url") + "/reservas/1",
+        method: "DELETE"
+    }, function (err, res) {
+        pm.expect(res).to.have.status(200);
+        pm.expect(res).to.be.json;
+        var jsonData = res.json();
+        pm.expect(jsonData).to.be.an("object");
+    });
+});
+
