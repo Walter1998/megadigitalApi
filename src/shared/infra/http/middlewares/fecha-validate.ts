@@ -12,7 +12,7 @@ export function esFechaMayorQueHoy(fecha: Date): boolean {
     fecha.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00 de la fecha proporcionada
 
     // Devolver true si la fecha proporcionada es mayor que el día actual, de lo contrario, devolver false
-    return fecha.getTime() > hoy.getTime();
+    return fecha.getTime() >= hoy.getTime();
 }
 
 /**

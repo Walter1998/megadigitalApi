@@ -260,9 +260,6 @@ paths:
             schema:
               type: object
               properties:
-                fechareserva:
-                  type: string
-                  format: date-time
                 fechaentrada:
                   type: string
                   format: date-time
@@ -273,8 +270,6 @@ paths:
                   type: integer
                 persona_id:
                   type: integer
-                montoreserva:
-                  type: number
       responses:
         "200":
           description: Reserva creada exitosamente.

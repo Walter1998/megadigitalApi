@@ -47,12 +47,6 @@ export class ReservaService extends BaseService<ReservaEntity> {
      */
     async createReserva(reserva: ReservaDTO): Promise<ReservaEntity | null | undefined> {
         try {
-            // Calcular la cantidad de días de la reserva
-            const diasReserva = Math.ceil((reserva.fechasalida.getTime() - reserva.fechaentrada.getTime()) / (1000 * 60 * 60 * 24));
-
-            // Calcular el monto de la reserva (Gs. 120.000 por día)
-            reserva.montoreserva = diasReserva * 120000;
-
             console.log(`${ReservaService.name} - createReserva`);
             return (await this.useRepository).save(reserva);
         } catch (error) {

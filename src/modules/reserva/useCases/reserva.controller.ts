@@ -73,10 +73,11 @@ export class ReservaController extends BaseService<ReservaEntity> {
                 if (esFechaSalidaMayor(nuevaReserva.fechaentrada, nuevaReserva.fechasalida)) {
 
                     // Calcular la cantidad de días de la reserva
-                    const diasReserva = Math.ceil((nuevaReserva.fechasalida.getTime() - nuevaReserva.fechaentrada.getTime()) / (1000 * 60 * 60 * 24));
-
+                    const diasReserva = Math.ceil((nuevaReserva.fechasalida.getTime() - nuevaReserva.fechaentrada.getTime()) / (1000 * 60 * 60 * 24)-1);
+                    console.log(diasReserva);
                     // Calcular el monto de la reserva (Gs. 120.000 por día)
                     nuevaReserva.montoreserva = diasReserva * 120000;
+                    console.log("monto",nuevaReserva.montoreserva);
 
                     const reservaCreada = await this.reservaService.createReserva(nuevaReserva);
 
